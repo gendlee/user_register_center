@@ -3,8 +3,11 @@ package com.example.Redis.controller;
 import com.example.Redis.service.MyLogger;
 import com.example.Redis.utils.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
 
 @RestController
 public class RedisController {
@@ -33,19 +36,18 @@ public class RedisController {
     }
 
     @RequestMapping("/get")
-    public String getRedis(@RequestParam(value = "redisKey", defaultValue = "") String redisKey) {
+    public ModelAndView getRedis(@RequestParam(value = "redisKey", defaultValue = "") String redisKey,
+                                 HttpServletRequest httpServletRequest) {
         String redisValue = null;
         try {
             redisValue = (String)redisUtil.get(redisKey);
-            myLogger.info("redis读数据："+ redisKey + "  " + redisValue);
+            myLogger.info("redis读数据："+ redisKey + " -> " + redisValue);
         } catch (Exception e) {
             myLogger.error("redis读数据失败："+ redisKey);
         }
-        if (redisValue != null) {
-            return redisValue;
-        }
-
-        return "fail to read";
+        //设置html中页面参数值
+        httpServletRequest.setAttribute("redisValue", redisValue);
+        return new ModelAndView("/redis_get");
     }
 
 
