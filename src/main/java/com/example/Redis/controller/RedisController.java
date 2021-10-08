@@ -3,6 +3,7 @@ package com.example.Redis.controller;
 import com.example.Redis.service.MyLogger;
 import com.example.Redis.utils.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpRequest;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -18,21 +19,26 @@ public class RedisController {
     @Autowired
     private RedisUtil redisUtil;
 
+    @Value("${spring.redis.expire}")
+    private long EXPIRE_TIME_SECOND;
+
     @GetMapping("/hello")
     public ModelAndView hello() {
-        return new ModelAndView("/redis.html");
+        return new ModelAndView("/redis_set.html");
     }
 
     @RequestMapping("/set")
-    public ModelAndView setRedis(@RequestParam(value = "redisKey", defaultValue = "") String redisKey, @RequestParam(value = "redisValue", defaultValue = "") String redisValue) {
+    public ModelAndView setRedis(@RequestParam(value = "redisKey", defaultValue = "key") String redisKey,
+                                 @RequestParam(value = "redisValue", defaultValue = "value") String redisValue,
+                                 @RequestParam(value = "expireTime", defaultValue = "1000") String expireTime) {
         try {
-            redisUtil.set(redisKey, redisValue);
-            myLogger.info("redis写数据："+ redisKey + "  " + redisValue);
+            redisUtil.set(redisKey, redisValue, Long.parseLong(expireTime));
+            myLogger.info("redis写数据："+ redisKey + " -> "  + redisValue, "过期时间： " + expireTime + "秒");
         } catch (Exception e) {
-            myLogger.error("redis写数据失败："+ redisKey + "  " + redisValue);
+            myLogger.error("redis写数据失败："+ redisKey + " -> "  + redisValue);
         }
 
-        return new ModelAndView("/redis");
+        return new ModelAndView("/redis_set.html");
     }
 
     @RequestMapping("/get")
@@ -47,7 +53,7 @@ public class RedisController {
         }
         //设置html中页面参数值
         httpServletRequest.setAttribute("redisValue", redisValue);
-        return new ModelAndView("/redis_get");
+        return new ModelAndView("/redis_get.html");
     }
 
 

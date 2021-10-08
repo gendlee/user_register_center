@@ -143,7 +143,7 @@ public class MyLogger implements Logger {
 
     @Override
     public void info(String s, Object o) {
-
+        System.out.println("[info] " + s + "|" + o);
     }
 
     @Override
