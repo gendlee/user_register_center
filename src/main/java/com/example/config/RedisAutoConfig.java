@@ -1,4 +1,4 @@
-package com.example.Redis.config;
+package com.example.config;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;

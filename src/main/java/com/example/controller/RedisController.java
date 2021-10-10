@@ -1,10 +1,9 @@
-package com.example.Redis.controller;
+package com.example.controller;
 
-import com.example.Redis.service.MyLogger;
-import com.example.Redis.utils.RedisUtil;
+import com.example.service.MyLogger;
+import com.example.utils.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpRequest;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
