@@ -225,4 +225,20 @@
       create_time = #{createTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+
+  <insert id="insertBy4Element" parameterType="com.example.entity.UserRegister">
+    <!-- 自定义的插入，其他的使用默认值 -->
+    insert into user_register
+    (id, user_id, mobile_no,
+    login_name, password, role,
+    nick_name, active_status,
+    update_time, create_time, remark)
+    values
+    (#{id,jdbcType=BIGINT}, #{userId,jdbcType=VARCHAR}, #{mobileNo,jdbcType=VARCHAR},
+    #{loginName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{role,jdbcType=VARCHAR},
+    #{nickName,jdbcType=VARCHAR}, #{activeStatus,jdbcType=VARCHAR},
+    now(), now(), '')
+  </insert>
+
 </mapper>

@@ -58,4 +58,11 @@ public interface UserRegisterMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(UserRegister record);
+
+    /**
+     * 自定义的插入
+     * @param record
+     * @return
+     */
+    int insertBy4Element(UserRegister record);
 }

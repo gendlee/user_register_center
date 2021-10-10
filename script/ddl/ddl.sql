@@ -12,14 +12,15 @@ CREATE TABLE demo.user_register(
  `role` varchar(32) NOT NULL COMMENT '角色',
  `nick_name` varchar(32) COMMENT '昵称',
  `active_status` varchar(1) NOT NULL  COMMENT '用户状态，A:注册, D:注销, P:流程中',
- `remark` text COMMENT '用户详细信息',
+ `remark` text COMMENT '备注',
 
  `update_time` datetime NOT NULL COMMENT '更新时间',
  `create_time` datetime NOT NULL COMMENT '创建时间',
 
   PRIMARY KEY `pk_id` (`id`),  -- 主键
-  UNIQUE KEY `uq_user_id_mobile_no` (`user_id`,`mobile_no`), -- 组合的唯一性
+  UNIQUE KEY `uq_mobile_no` (`mobile_no`), -- 唯一性
   UNIQUE KEY `uq_login_name` (`login_name`),
+  UNIQUE KEY `uq_user_id` (`user_id`),
   KEY `ind_login_name` (`login_name`) USING BTREE, -- 建立索引，查询更快
   KEY `ind_user_id` (`user_id`) USING BTREE, -- 建立索引，查询更快
   KEY `ind_mobile_no` (`mobile_no`) USING BTREE
