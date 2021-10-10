@@ -37,9 +37,11 @@
 
 
 
+# Bonus
+
 ---
 # mybatis代码自动生成
-在IDEA的Terminal中执行：
+以上项目中用到的mysql相关entity、mapper（也叫dao）类均通过mybatis代码生成工具实现，在IDEA的Terminal中执行：
 `java -jar D:\\env\\apache-maven-3.8.2\\repo\\org\\mybatis\\generator\\mybatis-generator-core\\1.3.2\\mybatis-generator-core-1.3.2.jar  -configfile D:\\code\\Redis\\src\\main\\resources\\generatorConfig.xml -overwrite`
 + 以上路径根据实际自己实际情况变化
 + overwrite表示覆盖式写
