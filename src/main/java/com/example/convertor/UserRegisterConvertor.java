@@ -3,6 +3,7 @@ package com.example.convertor;
 import com.example.Security.MD5;
 import com.example.entity.UserRegister;
 
+import javax.servlet.http.HttpServletRequest;
 import java.security.Security;
 import java.util.Random;
 import java.util.UUID;
@@ -19,7 +20,7 @@ public class UserRegisterConvertor {
 
 
 
-    public static UserRegister buildUserRegister(String loginName, String password, String nickName, String mobileNo) {
+    public static UserRegister buildUserRegister(HttpServletRequest request) {
         UserRegister userRegister = new UserRegister();
 
         //随机生成ID
@@ -27,12 +28,12 @@ public class UserRegisterConvertor {
         userRegister.setUserId(genUserId);
 
         //对password加密
-        String pwdDecode = MD5.getDecode(password);
+        String pwdDecode = MD5.getDecode(request.getParameter("password"));
         userRegister.setPassword(pwdDecode);
 
-        userRegister.setLoginName(loginName);
-        userRegister.setNickName(nickName);
-        userRegister.setMobileNo(mobileNo);
+        userRegister.setLoginName(request.getParameter("loginName"));
+        userRegister.setNickName(request.getParameter("nickName"));
+        userRegister.setMobileNo(request.getParameter("mobileNo"));
         userRegister.setActiveStatus(STATUS_A);
         userRegister.setRole(ROLE_U);
 

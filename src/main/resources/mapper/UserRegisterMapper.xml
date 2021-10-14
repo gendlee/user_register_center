@@ -241,4 +241,33 @@
     now(), now(), '')
   </insert>
 
+  <select id="selectByLoginName" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from user_register
+    where login_name = #{loginName,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectByMobileNo" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from user_register
+    where mobile_no = #{mobileNo,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectByUniqueKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from user_register
+    where mobile_no = #{mobileNo,jdbcType=VARCHAR}
+    or login_name = #{loginName,jdbcType=VARCHAR}
+  </select>
+
+
 </mapper>

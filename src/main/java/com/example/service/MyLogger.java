@@ -263,7 +263,7 @@ public class MyLogger implements Logger {
 
     @Override
     public void error(String s, Object o) {
-
+        System.out.println("[error] " + s + "|" + o);
     }
 
     @Override

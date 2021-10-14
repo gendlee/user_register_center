@@ -65,4 +65,28 @@ public interface UserRegisterMapper {
      * @return
      */
     int insertBy4Element(UserRegister record);
+
+    /**
+     * loginName查询
+     * @param loginName
+     * @return UserRegister
+     */
+    UserRegister selectByLoginName(String loginName);
+
+    /**
+     * mobileNo查询
+     * @param mobileNo
+     * @return UserRegister
+     */
+    UserRegister selectByMobileNo(String mobileNo);
+
+    /**
+     * loginName 或 mobileNo查询
+     * @param loginName
+     * @param mobileNo
+     * @return UserRegister
+     */
+    UserRegister selectByUniqueKey(String loginName, String mobileNo);
+
+
 }

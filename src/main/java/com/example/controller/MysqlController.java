@@ -2,10 +2,11 @@ package com.example.controller;
 
 import com.example.convertor.UserRegisterConvertor;
 import com.example.entity.UserRegister;
+import com.example.exception.UserRegisterException;
 import com.example.service.MyLogger;
 import com.example.service.UserRegisterService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -13,8 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
-@RestController
+@Controller
 public class MysqlController {
 
     @Autowired
@@ -28,28 +30,23 @@ public class MysqlController {
         return userRegisterService.getUserById(id).toString();
     }
 
-    /**
-     * 用户注册
-     * @param loginName
-     * @param password
-     * @param nickName
-     * @param mobileNo
-     * @return
-     */
+
     @RequestMapping(value = "/register")
-    public ModelAndView register(@RequestParam(value = "loginName") String loginName,
-                              @RequestParam(value = "password") String password,
-                              @RequestParam(value = "nickName") String nickName,
-                              @RequestParam(value = "mobileNo") String mobileNo) {
+    public String register() {
+        return "mysql_set.html";
+    }
+
+    @RequestMapping(value = "/doRegister")
+    public String  registerIndex(HttpServletRequest request) {
+        // TODO parameter verify
         try {
-            UserRegister userRegister = UserRegisterConvertor.buildUserRegister(loginName,password, nickName, mobileNo);
-            userRegisterService.insertUser(userRegister);
-        } catch (Exception e) {
-            myLogger.error("注册失败, 原因是：" + e);
-            return new ModelAndView("/register_fail.html");
+            UserRegister userRegister = UserRegisterConvertor.buildUserRegister(request);
+            userRegisterService.register(userRegister);
+        } catch (UserRegisterException e) {
+            return "register_fail.html";
         }
 
-        return new ModelAndView("/register_succ.html");
+        return "register_succ.html";
     }
 
 }
