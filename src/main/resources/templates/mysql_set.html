@@ -6,16 +6,16 @@
 </head>
 <body>
 
-<div align="center" style="border:1px solid red">
-    <form action="/register"> <!--这里提交后跳到/register-->
+<div align="center" style="border:2px solid green">
+    <form action="/doRegister"> <!--这里提交后跳到/doRegister-->
         请输入用户名:
         <input type="text" name="loginName" value="">
         （不超过20个字符）
         <br>
         <br>
         请输入密码:
-        <input type="text" name="password" value="">
-        （先显示后边再给你掩盖）
+        <input type="password" name="password" value="">
+        （不超过32个字符）
         <br>
         <br>
         请设置个昵称:
@@ -32,6 +32,12 @@
         <br>
         <br>
     </form>
+
+    <div align="center" style="">
+        <font size="3" color="green">
+          <p th:text="${result}" />
+        </font></p>
+    </div>
 </div>
 </body>
 

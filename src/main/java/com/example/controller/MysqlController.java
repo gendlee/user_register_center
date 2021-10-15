@@ -2,6 +2,7 @@ package com.example.controller;
 
 import com.example.convertor.UserRegisterConvertor;
 import com.example.entity.UserRegister;
+import com.example.enums.RegisterEnum;
 import com.example.exception.UserRegisterException;
 import com.example.service.MyLogger;
 import com.example.service.UserRegisterService;
@@ -10,11 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 @Controller
 public class MysqlController {
@@ -37,16 +35,18 @@ public class MysqlController {
     }
 
     @RequestMapping(value = "/doRegister")
-    public String  registerIndex(HttpServletRequest request) {
-        // TODO parameter verify
+    public String  registerIndex(HttpServletRequest request, HttpServletRequest httpServletRequest) {
+        // TODO parameter verify by annotation on field
+        String registerResult = RegisterEnum.USER_REGISTER_SUCC.getDesc();
         try {
             UserRegister userRegister = UserRegisterConvertor.buildUserRegister(request);
             userRegisterService.register(userRegister);
         } catch (UserRegisterException e) {
-            return "register_fail.html";
+            registerResult = RegisterEnum.USER_REGISTER_FAIL.getDesc();
         }
 
-        return "register_succ.html";
+        httpServletRequest.setAttribute("result", registerResult + "!");
+        return "mysql_set.html";
     }
 
 }

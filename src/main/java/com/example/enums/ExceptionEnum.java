@@ -1,9 +1,9 @@
-package com.example.exception;
+package com.example.enums;
 
 public enum ExceptionEnum {
 
     USER_LOGIN_NAME_EXIST("4000001", "用户名已被注册"),
-    USER_MOBILE_NO_EXIST("4000002", "手机号已被注册")
+    USER_MOBILE_NO_EXIST("4000002", "手机号已被注册"),
 
     ;
 

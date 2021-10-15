@@ -1,5 +1,7 @@
 package com.example.exception;
 
+import com.example.enums.ExceptionEnum;
+
 /**
  * 用户注册类异常
  */
