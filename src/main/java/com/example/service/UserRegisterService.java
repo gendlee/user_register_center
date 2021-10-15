@@ -26,12 +26,12 @@ public class UserRegisterService {
         UserRegister user = null;
         user = userRegisterMapper.selectByLoginName(userRegister.getLoginName());
         if (user != null) {
-            myLogger.error(ExceptionEnum.USER_LOGIN_NAME_EXIST.getDescription(), userRegister.getMobileNo());
+            myLogger.error(ExceptionEnum.USER_LOGIN_NAME_EXIST.getDescription(), userRegister.getLoginName());
             throw new UserRegisterException(ExceptionEnum.USER_LOGIN_NAME_EXIST);
         }
         user = userRegisterMapper.selectByMobileNo(userRegister.getMobileNo());
         if (user != null) {
-            myLogger.error(ExceptionEnum.USER_MOBILE_NO_EXIST.getDescription(), userRegister.getLoginName());
+            myLogger.error(ExceptionEnum.USER_MOBILE_NO_EXIST.getDescription(), userRegister.getMobileNo());
             throw new UserRegisterException(ExceptionEnum.USER_MOBILE_NO_EXIST);
         }
 
