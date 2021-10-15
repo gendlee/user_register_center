@@ -1,4 +1,4 @@
-# redis_playground
+# 用户注册系统
 
 
 ## 项目介绍
