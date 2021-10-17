@@ -24,6 +24,10 @@
     -->
     <result column="remark" jdbcType="LONGVARCHAR" property="remark" />
   </resultMap>
+  <resultMap type="java.lang.String" id="loginNameMap">
+    <result column="login_name" jdbcType="VARCHAR" property="loginName" />
+  </resultMap>
+
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbggenerated
@@ -269,5 +273,13 @@
     or login_name = #{loginName,jdbcType=VARCHAR}
   </select>
 
+  <select id="selectLoginNameByPage" resultMap="loginNameMap">
+    select
+    login_name
+    from user_register
+    where
+    login_name > #{loginName,jdbcType=VARCHAR}
+    limit 0, #{pageSize,jdbcType=BIGINT}
+  </select>
 
 </mapper>
