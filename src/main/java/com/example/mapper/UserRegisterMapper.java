@@ -1,6 +1,9 @@
 package com.example.mapper;
 
 import com.example.entity.UserRegister;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface UserRegisterMapper {
     /**
@@ -88,5 +91,12 @@ public interface UserRegisterMapper {
      */
     UserRegister selectByUniqueKey(String loginName, String mobileNo);
 
+    /**
+     * loginName 或 mobileNo查询
+     * @param loginName
+     * @param pageSize
+     * @return
+     */
+    List<String> selectLoginNameByPage(@Param("loginName") String loginName, @Param("pageSize") int pageSize);
 
 }

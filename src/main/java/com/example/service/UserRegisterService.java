@@ -4,14 +4,19 @@ import com.example.entity.UserRegister;
 import com.example.enums.ExceptionEnum;
 import com.example.exception.UserRegisterException;
 import com.example.mapper.UserRegisterMapper;
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 @Service
 public class UserRegisterService {
-
+    private final static int PAGE_SIZE = 500;
     @Resource
     private UserRegisterMapper userRegisterMapper;
     @Autowired
@@ -36,6 +41,10 @@ public class UserRegisterService {
         }
 
         userRegisterMapper.insertBy4Element(userRegister);
+    }
+
+    public List<String> getLoginNameByPage(String loginName, int pageSize) {
+        return userRegisterMapper.selectLoginNameByPage(loginName, pageSize);
     }
 
 }
