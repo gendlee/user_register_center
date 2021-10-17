@@ -99,4 +99,11 @@ public interface UserRegisterMapper {
      */
     List<String> selectLoginNameByPage(@Param("loginName") String loginName, @Param("pageSize") int pageSize);
 
+    /**
+     * loginName 或 mobileNo 删除
+     * @param loginName
+     * @param mobileNo
+     * @return
+     */
+    int deleteByUniqueKey(@Param("loginName") String loginName, @Param("mobileNO") String mobileNo);
 }

@@ -7,8 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
-import javax.annotation.Resource;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -21,7 +19,7 @@ public class CachePreheatService implements InitializingBean {
     private RedisUtil redisUtil;
     @Autowired
     private UserRegisterService userRegisterService;
-    
+
     @Override
     public void afterPropertiesSet() {
         String loginName = Strings.EMPTY;

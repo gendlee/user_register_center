@@ -282,4 +282,10 @@
     limit 0, #{pageSize,jdbcType=BIGINT}
   </select>
 
+  <delete id="deleteByUniqueKey" parameterType="java.lang.Long">
+    delete from user_register
+    where loginName = #{loginName,jdbcType=VARCHAR}
+    or mobileNo = #{loginName,jdbcType=VARCHAR}
+  </delete>
+
 </mapper>
