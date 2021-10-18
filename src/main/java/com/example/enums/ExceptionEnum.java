@@ -7,6 +7,11 @@ public enum ExceptionEnum {
 
     SYSTEM_REDIS_ERROR("4000020", "redis存取异常"),
     SYSTEM_MYSQL_ERROR("4000021", "mysql存取异常"),
+    SYSTEM_PARAMETER_ERROR("4000022", "参数异常"),
+    SYSTEM_PARAMETER_LOGIN_NAME_ERROR("4000023", "登录名格式异常"),
+    SYSTEM_PARAMETER_MOBILE_NO_ERROR("4000024", "手机号格式异常"),
+    SYSTEM_PARAMETER_PWD_ERROR("4000025", "密码格式异常"),
+    SYSTEM_PARAMETER_NICK_NAME_ERROR("4000026", "昵称格式异常"),
 
 
     ;

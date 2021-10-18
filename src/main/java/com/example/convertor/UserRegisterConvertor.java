@@ -27,7 +27,7 @@ public class UserRegisterConvertor {
         String genUserId = UUID.randomUUID().toString().substring(0, 32);
         userRegister.setUserId(genUserId);
 
-        //对password加密
+        //对password加密 todo 先对pwd格式进行校验
         String pwdDecode = MD5.getDecode(request.getParameter("password"));
         userRegister.setPassword(pwdDecode);
 

@@ -1,5 +1,6 @@
 package com.example.service;
 
+import com.example.enums.ExceptionEnum;
 import org.slf4j.Logger;
 import org.slf4j.Marker;
 import org.springframework.stereotype.Component;
@@ -259,6 +260,10 @@ public class MyLogger implements Logger {
     @Override
     public void error(String s) {
         System.out.println("[error] " + s);
+    }
+
+    public void error(ExceptionEnum exceptionEnum, String e) {
+        System.out.println("[error] " + exceptionEnum.getExceptionCode() + "|" + exceptionEnum.getDescription() + "|" + e);
     }
 
     @Override
