@@ -37,22 +37,28 @@ public class UserRegisterService {
     }
 
 
-    public void register(UserRegister userRegister) throws UserRegisterException {
-        //从缓存读取loginName校验是否已被注册
-        Object obj = redisUtil.get(userRegister.getLoginName());
-
-        this.checkRegisterParam(userRegister, obj);
-
-        if (Objects.nonNull(obj)) {
+    public void register(UserRegister userRegister, int cacheExpireTime, int randomTimeRange) throws UserRegisterException {
+        if (Objects.nonNull(redisUtil.get(userRegister.getLoginName()))) {
+            myLogger.info("命中Redis缓存");
+            myLogger.error(ExceptionEnum.USER_LOGIN_NAME_EXIST.getDescription(), userRegister.getLoginName());
+            throw new UserRegisterException(ExceptionEnum.USER_LOGIN_NAME_EXIST);
+        } else if (Objects.nonNull(userRegisterMapper.selectByLoginName(userRegister.getLoginName()))) {
+            myLogger.info("未命中缓存,但MySQL中存在，读取并放入缓存");
+            if (cacheExpireTime < 0) {
+                //永不过期
+                redisUtil.set(userRegister.getLoginName(), Strings.EMPTY);
+            } else {
+                int randomExpireTime = (int)(Math.random() * randomTimeRange); //随机时间
+                redisUtil.set(userRegister.getLoginName(), Strings.EMPTY, cacheExpireTime + randomExpireTime);
+            }
             myLogger.error(ExceptionEnum.USER_LOGIN_NAME_EXIST.getDescription(), userRegister.getLoginName());
             throw new UserRegisterException(ExceptionEnum.USER_LOGIN_NAME_EXIST);
         }
 
-        // todo 改成缓存读取
-        if (userRegisterMapper.selectByMobileNo(userRegister.getMobileNo()) != null) {
-            myLogger.error(ExceptionEnum.USER_MOBILE_NO_EXIST.getDescription(), userRegister.getMobileNo());
-            throw new UserRegisterException(ExceptionEnum.USER_MOBILE_NO_EXIST);
-        }
+        myLogger.info("[缓存穿透] Redis及MySQL中均未查询到", userRegister.getLoginName());
+
+        //参数校验
+        this.checkRegisterParam(userRegister);
 
         //数据插入mysql实现注册
         try {
@@ -63,7 +69,12 @@ public class UserRegisterService {
 
         //同步将数据插入redis缓存
         try {
-            redisUtil.set(userRegister.getLoginName(), Strings.EMPTY);
+            if (cacheExpireTime < 0) {
+                //永不过期
+                redisUtil.set(userRegister.getLoginName(), Strings.EMPTY);
+            } else {
+                redisUtil.set(userRegister.getLoginName(), Strings.EMPTY, cacheExpireTime);
+            }
         } catch (Exception e) {
             myLogger.error(ExceptionEnum.SYSTEM_REDIS_ERROR.getExceptionCode(), e.getMessage());
             //回滚已插入到mysql的数据
@@ -72,7 +83,7 @@ public class UserRegisterService {
         }
     }
 
-    private void checkRegisterParam(UserRegister userRegister, Object redisObj) throws UserRegisterException {
+    private void checkRegisterParam(UserRegister userRegister) throws UserRegisterException {
         if (StringUtils.isEmpty(userRegister.getLoginName()) || StringUtils.length(userRegister.getLoginName()) > MAX_LOGIN_NAME_LENGTH) {
             myLogger.error(ExceptionEnum.SYSTEM_PARAMETER_LOGIN_NAME_ERROR, Strings.EMPTY);
             throw new UserRegisterException(ExceptionEnum.SYSTEM_PARAMETER_LOGIN_NAME_ERROR);
@@ -88,10 +99,6 @@ public class UserRegisterService {
         if (StringUtils.isEmpty(userRegister.getNickName())) {
             myLogger.error(ExceptionEnum.SYSTEM_PARAMETER_NICK_NAME_ERROR, Strings.EMPTY);
             throw new UserRegisterException(ExceptionEnum.SYSTEM_PARAMETER_NICK_NAME_ERROR);
-        }
-        if (Objects.nonNull(redisObj)) {
-            myLogger.error(ExceptionEnum.USER_LOGIN_NAME_EXIST, userRegister.getLoginName());
-            throw new UserRegisterException(ExceptionEnum.USER_LOGIN_NAME_EXIST);
         }
     }
 

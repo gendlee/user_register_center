@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.jws.soap.SOAPBinding;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
@@ -31,22 +32,49 @@ public class MysqlController {
 
     @RequestMapping(value = "/register")
     public String register() {
-        return "mysql_set.html";
+        return "register.html";
+    }
+
+    @RequestMapping(value = "/multiRegister")
+    public String multiRegister() {
+        return "multi_register.html";
     }
 
     @RequestMapping(value = "/doRegister")
-    public String  registerIndex(HttpServletRequest request, HttpServletRequest httpServletRequest) {
+    public String  doRegister(HttpServletRequest request) {
         // TODO parameter verify by annotation on field
         String registerResult = RegisterEnum.USER_REGISTER_SUCC.getDesc();
         try {
             UserRegister userRegister = UserRegisterConvertor.buildUserRegister(request);
-            userRegisterService.register(userRegister);
+            userRegisterService.register(userRegister, -1, 0);
         } catch (UserRegisterException e) {
             registerResult = RegisterEnum.USER_REGISTER_FAIL.getDesc();
         }
 
-        httpServletRequest.setAttribute("result", registerResult + "!");
-        return "mysql_set.html";
+        request.setAttribute("result", registerResult + "!");
+        return "register.html";
+    }
+
+    //todo 仅用于展示批量注册用户产生的 <缓存雪崩> 效果
+    @RequestMapping(value = "/doMultiRegister")
+    public String doMultiRegister(HttpServletRequest request) {
+        String[] loginNames = request.getParameter("loginNames").split(",");
+        int i = 0;
+        String registerResult = RegisterEnum.USER_REGISTER_SUCC.getDesc();
+        for (String loginName : loginNames) {
+            UserRegister userRegister = UserRegisterConvertor.buildUserRegister(loginName,"123@abc", "nickName" + i, "1806666888" + i);
+            try {
+                int cacheExpireTime = 20;
+                userRegisterService.register(userRegister, cacheExpireTime, 15);
+            } catch (UserRegisterException ure) {
+                myLogger.error("批量注册有异常：" + ure.getMessage());
+            }
+            i++;
+        }
+
+        request.setAttribute("result", registerResult);
+        return "multi_register.html";
+
     }
 
 }

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <title>用户注册</title>
+</head>
+<body>
+
+<div align="center" style="border:2px solid green">
+    <form action="/doMultiRegister"> <!--这里提交后跳到/doMultiRegister-->
+        输入批量用户名:
+        <input type="text" name="loginNames" value="" style = "height:200px;width:400px">
+		
+        （英文逗号分割）
+        
+        <br>
+        <input type="submit" value="批量注册 " style="border:1px solid green">
+        <br>
+        <br>
+    </form>
+
+    <div align="center" style="">
+        <font size="3" color="green">
+          <p th:text="${result}" />
+        </font></p>
+    </div>
+</div>
+</body>
+
+
+</html>
+

@@ -2,11 +2,11 @@ package com.example.convertor;
 
 import com.example.Security.MD5;
 import com.example.entity.UserRegister;
+import org.thymeleaf.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Security;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 
 public class UserRegisterConvertor {
 
@@ -21,6 +21,15 @@ public class UserRegisterConvertor {
 
 
     public static UserRegister buildUserRegister(HttpServletRequest request) {
+
+        return buildUserRegister(request.getParameter("loginName"),
+                                 request.getParameter("password"),
+                                 request.getParameter("nickName"),
+                                 request.getParameter("mobileNo"));
+    }
+
+
+    public static UserRegister buildUserRegister(String loginName, String pwd, String nickName, String mobileNo) {
         UserRegister userRegister = new UserRegister();
 
         //随机生成ID
@@ -28,12 +37,12 @@ public class UserRegisterConvertor {
         userRegister.setUserId(genUserId);
 
         //对password加密 todo 先对pwd格式进行校验
-        String pwdDecode = MD5.getDecode(request.getParameter("password"));
+        String pwdDecode = MD5.getDecode(pwd);
         userRegister.setPassword(pwdDecode);
 
-        userRegister.setLoginName(request.getParameter("loginName"));
-        userRegister.setNickName(request.getParameter("nickName"));
-        userRegister.setMobileNo(request.getParameter("mobileNo"));
+        userRegister.setLoginName(loginName);
+        userRegister.setNickName(nickName);
+        userRegister.setMobileNo(mobileNo);
         userRegister.setActiveStatus(STATUS_A);
         userRegister.setRole(ROLE_U);
 
