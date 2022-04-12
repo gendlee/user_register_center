@@ -74,6 +74,19 @@
 			<scope>test</scope>
 		</dependency>
 
+		<!-- 使用@SLF4J -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<optional>true</optional>
+		</dependency>
+
+		<!-- 使用@Aspect -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-aop</artifactId>
+		</dependency>
+
 
 	</dependencies>
 
