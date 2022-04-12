@@ -1,4 +1,4 @@
-package com.example.common.aspect;
+package com.example.common.validator;
 
 import com.example.common.annotation.GendLog;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +19,7 @@ import java.util.Objects;
 @Slf4j
 @Aspect
 @Component
-public class GendLogAspect {
+public class GendLogValidator {
 
     /**
      * 定义切点
@@ -47,29 +47,31 @@ public class GendLogAspect {
 
         // 获取注解标志
         GendLog gendLog = method.getAnnotation(GendLog.class);
+
+        // 有注解的方法才会执行
         if (Objects.nonNull(gendLog)) {
             String value = gendLog.value();
             // 获取操作名称
             System.out.println("方法名：" + value);
+
+            HttpServletRequest servletRequest = ((ServletRequestAttributes) RequestContextHolder
+                    .getRequestAttributes())
+                    .getRequest();
+
+
+            // 打印操作
+            System.out.println("时间: " + new Date());
+
+            System.out.println("路径: " + servletRequest.getPathInfo());
+            System.out.println("方法: " + servletRequest.getMethod());
+            System.out.println("请求url: " + servletRequest.getRequestURI());
+            System.out.println("content type: " + servletRequest.getContentType());
+            System.out.println("getProtocol: " + servletRequest.getProtocol());
+            System.out.println("server port: " + servletRequest.getServerPort());
+
+
+            System.out.println("打印完成");
         }
-
-        HttpServletRequest servletRequest = ((ServletRequestAttributes) RequestContextHolder
-                .getRequestAttributes())
-                .getRequest();
-
-
-        // 打印操作
-        System.out.println("时间: " + new Date());
-
-        System.out.println("路径: " + servletRequest.getPathInfo());
-        System.out.println("方法: " + servletRequest.getMethod());
-        System.out.println("请求url: " + servletRequest.getRequestURI());
-        System.out.println("content type: " + servletRequest.getContentType());
-        System.out.println("getProtocol: " + servletRequest.getProtocol());
-        System.out.println("server port: " + servletRequest.getServerPort());
-
-
-        System.out.println("打印完成");
 
 
 
