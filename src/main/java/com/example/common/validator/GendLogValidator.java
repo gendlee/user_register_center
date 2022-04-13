@@ -62,7 +62,7 @@ public class GendLogValidator {
             // 打印操作
             System.out.println("时间: " + new Date());
 
-            System.out.println("路径: " + servletRequest.getPathInfo());
+            System.out.println("路径: " + servletRequest.getContextPath());
             System.out.println("方法: " + servletRequest.getMethod());
             System.out.println("请求url: " + servletRequest.getRequestURI());
             System.out.println("content type: " + servletRequest.getContentType());

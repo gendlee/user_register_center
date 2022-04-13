@@ -13,6 +13,11 @@ public enum ExceptionEnum {
     SYSTEM_PARAMETER_PWD_ERROR("4000025", "密码格式异常"),
     SYSTEM_PARAMETER_NICK_NAME_ERROR("4000026", "昵称格式异常"),
 
+    HAS_NO_SUPER_ADMIN_PERMISSION("4100002", "没有超级管理员权限"),
+    HAS_NO_ADMIN_PERMISSION("4100001", "没有管理员权限"),
+    HAS_NO_USER_PERMISSION("4100003", "没有普通用户权限"),
+    HAS_NO_PERMISSION("4100004", "无权限"),
+
 
     ;
 
