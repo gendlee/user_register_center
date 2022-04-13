@@ -12,6 +12,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.Map;
 import java.util.Objects;
@@ -28,8 +29,7 @@ public class PermissionValidator {
     private static final int USER = 4;
 
     // 执行耗时
-    private static long startTimeMilli;
-    private static long endTimeMilli;
+    private static Instant startTimeMilli;
 
     // 切点
     @Pointcut("@annotation(com.example.common.annotation.Permission)")
@@ -41,7 +41,7 @@ public class PermissionValidator {
     @Before("pointCut()")
     public void surfaceCut(JoinPoint joinPoint) throws UserRegisterException{
         System.out.println("进入权限判断");
-        startTimeMilli = Instant.now().toEpochMilli();
+        startTimeMilli = Instant.now();
 
         MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
         Method method = methodSignature.getMethod();
@@ -88,8 +88,10 @@ public class PermissionValidator {
     // 执行方法后
     @After("pointCut()")
     public void afterProcess() {
-        endTimeMilli = Instant.now().toEpochMilli();
-        long elapsedTime = endTimeMilli - startTimeMilli;
+        Instant endTimeMilli = Instant.now();
+
+        long elapsedTime = Duration.between(startTimeMilli, endTimeMilli).toMillis();
+
         System.out.println("总耗时（毫秒）：" + elapsedTime);
 
     }
