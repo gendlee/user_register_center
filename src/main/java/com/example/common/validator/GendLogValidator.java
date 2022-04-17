@@ -1,42 +1,66 @@
 package com.example.common.validator;
 
-import com.example.common.annotation.GendLog;
 import lombok.extern.slf4j.Slf4j;
-import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.AfterReturning;
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Pointcut;
-import org.aspectj.lang.reflect.MethodSignature;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.*;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
-
-import javax.servlet.http.HttpServletRequest;
-import java.lang.reflect.Method;
-import java.util.Date;
-import java.util.Objects;
 
 @Slf4j
 @Aspect
 @Component
+@Order(1)  // 数值越小，优先级越高
 public class GendLogValidator {
 
     /**
      * 定义切点
      * 在注解的位置切入代码
      */
+
     @Pointcut("@annotation(com.example.common.annotation.GendLog)")
     public void logPointCut() {
 
     }
 
-    /**
-     * 切面
-     * @param joinPoint
-     */
-    @AfterReturning("logPointCut()")
-    public void printLog(JoinPoint joinPoint) {
 
+    @Before("logPointCut()")
+    public void before() {
+        System.out.println("Step 1-GendLog: 执行前");
+    }
+
+
+    @After("logPointCut()")  // 相当于finally，在AfterReturnIng之后
+    public void after() {
+        System.out.println("Step 3-1: 方法执行后");
+    }
+
+    @AfterThrowing(value = "logPointCut()", throwing = "这是增强中抛出的异常信息")
+    public void afterThrowing() {
+        System.out.println("Step 4: 方法抛出异常后");
+    }
+
+    /**
+    *@Desc: Around = Before + After
+    */
+    // @Around("logPointCut()")
+    public Object around(ProceedingJoinPoint pjp) {
+        System.out.println("Step X: 环绕执行-方法前处理");
+        Object obj = null;
+        try {
+            obj = pjp.proceed();
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+        System.out.println("Step Y: 环绕执行-方法后处理");
+
+        return obj;
+
+    }
+
+    // 在执行注解的方法【后】执行
+    /*@AfterReturning("logPointCut()")
+    public void printLog(JoinPoint joinPoint) {
+        System.out.println("Step 3: 执行后");
         System.out.println("切面方式打印日志");
 
         // 从切面注入点处通过反射机制获取注入点处的方法
@@ -75,5 +99,5 @@ public class GendLogValidator {
 
 
 
-    }
+    }*/
 }
